@@ -8,14 +8,38 @@ public class RationalNumber extends RealNumber {
       denominator = 1;
     }
     else {
-      numerator = nume / gcd(nume,deno);
-      denominator = deno / gcd(nume,deno);
+      numerator = nume;
+      denominator = deno;
     }
     this.reduce();
   }
 
+  private void reduce(){
+    double reducer = gcd(numerator,denominator);
+    numerator /= reducer;
+    denominator /= reducer;
+    if (denominator < 0) {
+      numerator *= -1;
+      denominator *= -1;
+    }
+  }
+
+  private static int gcd(int a, int b){
+    if (b != 0){
+      return gcd(b,a%b);
+    }
+    return a;
+  }
+
+  public String toString(){
+    if (denominator == 1) {
+      return "" + numerator;
+    }
+    return "" + numerator + "/" + denominator + "";
+  }
+
   public double getValue(){
-    return numerator / denominator;
+    return (double)numerator / denominator;
   }
 
   public int getNumerator(){
@@ -25,53 +49,17 @@ public class RationalNumber extends RealNumber {
   public int getDenominator(){
     return denominator;
   }
-  /**
-  *@return a new RationalNumber that has the same numerator
-  *and denominator as this RationalNumber but reversed.
-  */
+
   public RationalNumber reciprocal(){
     RationalNumber recip = new RationalNumber
     (this.getDenominator(), this.getNumerator());
     return recip;
   }
-  /**
-  *@return true when the RationalNumbers have the same numerators and denominators, false otherwise.
-  */
+
   public boolean equals(RationalNumber other){
     boolean n = (this.getNumerator() == other.getNumerator());
     boolean d = (this.getDenominator() == other.getDenominator());
     return n && d;
-  }
-
-  public String toString(){
-    return "" + numerator + "/" + denominator + "";
-  }
-
-  /**Calculate the GCD of two integers.
-  *@param a the first integers
-  *@param b the second integer
-  *@return the value of the GCD
-  */
-  private static int gcd(int a, int b){
-    if (b != 0){
-      return gcd(b,a%b);
-    }
-    return a;
-  }
-
-  /**
-  *Divide the numerator and denominator by the GCD
-  *This must be used to maintain that all RationalNumbers are
-  *reduced after construction.
-  */
-  private void reduce(){
-    int reducer = gcd(numerator,denominator);
-    numerator /= reducer;
-    denominator /= reducer;
-    if (denominator < 0) {
-      numerator *= -1;
-      denominator *= -1;
-    }
   }
 
   public RationalNumber multiply(RationalNumber other){
